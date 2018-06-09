@@ -1,0 +1,9 @@
+<resources>
+
+    <string name="app_name">Library</string>
+    <string name="title_text">Do you love this app?</string>
+    <string name="rate_now_text">Rate Now</string>
+    <string name="remined_me_later_text">Maybe Later</string>
+    <string name="no_rhanks_text">No,thanks</string>
+
+</resources>
