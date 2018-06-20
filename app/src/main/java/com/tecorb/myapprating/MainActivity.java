@@ -21,8 +21,6 @@ public class MainActivity extends AppCompatActivity implements RatingListener{
         context=this;
         dialog=new MyAppRating(context,this);
 
-
-
     }
 
     @Override
@@ -51,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements RatingListener{
     @Override
     public void remindMeLater() {
 
-        Toast.makeText(context,"We will get back soon after 7 days",Toast.LENGTH_SHORT).show();
+        Toast.makeText(context,"We will get back soon after 3 days",Toast.LENGTH_SHORT).show();
         dialog.dissmissDialog();
 
     }
@@ -63,8 +61,6 @@ public class MainActivity extends AppCompatActivity implements RatingListener{
         dialog.dissmissDialog();
 
     }
-
-
 
 
 }

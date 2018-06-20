@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <integer name="launch_times">7</integer>
-    <integer name="max_days_after">7</integer>
+    <integer name="max_days_after">3</integer>
 
 </resources>

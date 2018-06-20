@@ -25,7 +25,7 @@ import java.util.Date;
 
 public class MyAppRating {
 
-    public interface ConditionTrigger{
+    public interface ConditionTrigger {
         boolean shouldShow();
 
     }
@@ -38,24 +38,24 @@ public class MyAppRating {
     private static final String PREFS_NAME = "erd_rating";
     private static final String KEY_WAS_RATED = "KEY_WAS_RATED";
     private static final String KEY_NEVER_REMINDER = "KEY_NEVER_REMINDER";
-    private static final String KEY_FIRST_HIT_DATE = "KEY_FIRST_HIT_DATE";
+    private static final String KEY_FIRST_REGISTER_DATE = "KEY_FIRST_HIT_DATE";
     private static final String KEY_LAUNCH_TIMES = "KEY_LAUNCH_TIMES";
 
     DialogBinding binding;
-
     RatingListener callback;
+    int launchTimes;
 
-    public MyAppRating(Context context,RatingListener callback){
-        this.callback=callback;
+    public MyAppRating(Context context, RatingListener callback) {
+        this.callback = callback;
         mContext = context;
         mPreferences = context.getSharedPreferences(PREFS_NAME, 0);
     }
 
-    public void onStart(){
+    public void onStart() {
         if (didRate() || didNeverReminder()) return;
 
-        int launchTimes = mPreferences.getInt(KEY_LAUNCH_TIMES, 0);
-        long firstDate = mPreferences.getLong(KEY_FIRST_HIT_DATE, -1L);
+        launchTimes = mPreferences.getInt(KEY_LAUNCH_TIMES, 0);
+        long firstDate = mPreferences.getLong(KEY_FIRST_REGISTER_DATE, -1L);
 
         if (firstDate == -1L) {
             registerDate();
@@ -74,21 +74,23 @@ public class MyAppRating {
             if (mCondition.shouldShow())
                 tryShow(mContext,title,rateNowText,reminedMeLaterText,noThanksText,backGroundColor);
         } else {
-            if (shouldShow())
-                tryShow(mContext,title,rateNowText,reminedMeLaterText,noThanksText,backGroundColor);
+
+                if (shouldShow())
+                    tryShow(mContext, title, rateNowText, reminedMeLaterText, noThanksText, backGroundColor);
+               // ratingDialog(mContext,title,rateNowText,reminedMeLaterText,noThanksText,backGroundColor);
         }
     }
 
     public void neverReminder() {
-        if (callback!=null) {
-            callback.neverReminder();
 
+        if (callback != null) {
+            callback.neverReminder();
             mPreferences.edit().putBoolean(KEY_NEVER_REMINDER, true).apply();
         }
     }
 
-    public void rateNow(){
-        if (callback!=null){
+    public void rateNow() {
+        if (callback != null) {
             callback.rateNow();
 
             String appPackage = mContext.getPackageName();
@@ -102,10 +104,10 @@ public class MyAppRating {
 
     public void remindMeLater() {
 
-        if (callback!=null){
+        if (callback != null) {
             callback.remindMeLater();
 
-            registerHitCount(0);
+            registerHitCount(launchTimes);
             registerDate();
         }
 
@@ -131,14 +133,14 @@ public class MyAppRating {
         dialog.setCancelable(cancelable);
     }
 
-    private void tryShow(Context context,String title, String rateNowText, String reminedMeLaterText,
-                         String noThanksText, int backGroundColor) {
+    public void tryShow(Context context,String title, String rateNowText, String reminedMeLaterText,
+                        String noThanksText, int backGroundColor) {
         if (isShowing())
             return;
-
         try {
             dialog = null;
-            ratingDialog(context,title,rateNowText,reminedMeLaterText,noThanksText,backGroundColor);
+                ratingDialog(context, title, rateNowText, reminedMeLaterText, noThanksText, backGroundColor);
+
         } catch (Exception e) {
             Log.e(getClass().getSimpleName(), e.getMessage());
         }
@@ -151,12 +153,26 @@ public class MyAppRating {
             return false;
         if (mPreferences.getBoolean(KEY_WAS_RATED, false))
             return false;
+
         int launchTimes = mPreferences.getInt(KEY_LAUNCH_TIMES, 0);
-        long firstDate = mPreferences.getLong(KEY_FIRST_HIT_DATE, 0L);
+        long firstDate = mPreferences.getLong(KEY_FIRST_REGISTER_DATE, 0L);
         long today = new Date().getTime();
         int maxLaunchTimes = mContext.getResources().getInteger(R.integer.launch_times);
         int maxDaysAfter = mContext.getResources().getInteger(R.integer.max_days_after);
-        return daysBetween(firstDate, today) > maxDaysAfter || launchTimes > maxLaunchTimes;
+
+        if (launchTimes==1){
+            return true;
+        }else {
+            return daysBetween(firstDate, today) > maxDaysAfter;
+        }
+
+        /*if (daysBetween(firstDate, today) > maxDaysAfter || launchTimes > maxLaunchTimes) {
+            return true;
+        }
+        return false;*/
+
+        //return daysBetween(firstDate, today) > maxDaysAfter || launchTimes > maxLaunchTimes;
+
 
     }
 
@@ -171,7 +187,7 @@ public class MyAppRating {
         Date today = new Date();
         mPreferences
                 .edit()
-                .putLong(KEY_FIRST_HIT_DATE, today.getTime())
+                .putLong(KEY_FIRST_REGISTER_DATE, today.getTime())
                 .apply();
     }
 
@@ -179,7 +195,7 @@ public class MyAppRating {
         return (lastDate - firstDate) / (1000 * 60 * 60 * 24);
     }
 
-    public void ratingDialog(final Context context,String title, String rateNowText, String reminedMeLaterText,
+    public void ratingDialog(final Context context, String title, String rateNowText, String reminedMeLaterText,
                              String noThanksText, int backGroundColor) {
 
         dialog = new Dialog(context);
