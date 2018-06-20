@@ -1,6 +1,6 @@
 # AppRatingDialog
 
-<img src="https://raw.githubusercontent.com/fernandodev/easy-rating-dialog/master/screenshots/device-2017-05-07-185513.png" width="320px">
+<img src="http://res.cloudinary.com/duyx74vfd/image/upload/v1529498210/Screenshot_2018-06-14-17-49-19_uwosum.png" width="320px">
 
 Default conditions to show:
 
