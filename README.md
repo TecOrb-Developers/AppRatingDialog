@@ -87,6 +87,8 @@ allprojects {
  }
 }
 ```
+```
 dependencies {
-   implementation 'com.github.TecOrb-Developers:AppRatingDialog:1.1'
+    implementation 'com.github.TecOrb-Developers:AppRatingDialog:1.1'
 }
+```
