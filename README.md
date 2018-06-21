@@ -78,6 +78,17 @@ class MyActivity implements RatingListener{
 ## Integration
 This library is hosted by jitpack.io.
 
+Your project must enable databinding, to enable databinding, add the following to your `build.gradle` file:
+
+```
+android {
+    ...
+    dataBinding {
+        enabled = true;
+    }
+}
+```
+
 Root level gradle:
 ```
 allprojects {
